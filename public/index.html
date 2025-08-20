@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audio Silence Remover</title>
+    <link rel="stylesheet" href="/custom-error-fix.css" />
+    
+    <!-- Preload FFmpeg core files -->
+    <link rel="preload" href="https://unpkg.com/@ffmpeg/core@0.12.10/dist/ffmpeg-core.js" as="script" crossorigin="anonymous">
+    <link rel="preload" href="https://unpkg.com/@ffmpeg/core@0.12.10/dist/ffmpeg-core.wasm" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="https://unpkg.com/@ffmpeg/core@0.12.10/dist/ffmpeg-core.worker.js" as="script" crossorigin="anonymous">
+    
+    <style>
+      /* Hide any error icons or overlays immediately */
+      body::after,
+      body > img,
+      body > svg,
+      svg[viewBox="0 0 24 24"],
+      svg text,
+      svg:not([class]),
+      [id^="error"],
+      [class^="error"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        max-width: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+      }
+      
+      /* Prevent SVGs from being visible */
+      .svg-container, 
+      [class*="svg"], 
+      svg {
+        max-height: 24px;
+        max-width: 24px;
+        overflow: hidden;
+      }
+      
+      /* Exceptionally hide the specific error SVG */
+      svg[fill="none"] {
+        display: none !important;
+      }
+    </style>
+    
+    <!-- FFmpeg core preloading fix -->
+    <script src="/ffmpeg-core-fix.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Apply fix for error icons -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Remove any standalone SVGs
+        document.querySelectorAll('svg:not([class])').forEach(svg => {
+          if (svg.querySelector('text')) {
+            svg.style.display = 'none';
+            svg.style.width = '0';
+            svg.style.height = '0';
+            svg.style.opacity = '0';
+            svg.parentElement.style.height = '0';
+            svg.parentElement.style.overflow = 'hidden';
+          }
+        });
+      });
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

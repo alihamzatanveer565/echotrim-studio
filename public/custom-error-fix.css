@@ -1,0 +1,40 @@
+/* Custom CSS to hide error SVG */
+svg[viewBox="0 0 24 24"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+svg text {
+  display: none !important;
+}
+
+/* Specifically target the error icon */
+svg:not([class]) {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+div:has(> svg:not([class])) {
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Fix error message display */
+#error-container,
+.error-message {
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid #f55;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+  font-size: 14px;
+  color: #f55;
+  font-family: system-ui, sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
