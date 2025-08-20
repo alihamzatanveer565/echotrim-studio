@@ -72,6 +72,7 @@ function App() {
 
   const handleProcessAgain = useCallback(() => {
     reset();
+    setFiles([]); // Clear the files array when going back to process another audio
   }, [reset]);
 
   if (!browserSupported) {
