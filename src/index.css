@@ -20,15 +20,9 @@
   #root::after,
   #root > img,
   #root > svg,
-  svg[class*="w-5"],
-  svg[class*="h-5"],
-  svg[width="24"],
-  svg[height="24"],
-  svg[viewBox*="0 0 24 24"],
   .error-icon,
   [id^="error"],
-  [class^="error"],
-  svg:not([class*="inline"]) {
+  [class^="error"] {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -42,13 +36,10 @@
     overflow: hidden !important;
   }
 
-  /* Target the error SVG specifically */
-  svg text,
-  svg [fill="none"],
-  svg text[dominant-baseline="middle"],
-  svg[fill="none"],
-  svg text:only-child,
-  svg text:first-child {
+  /* Target only specific error SVGs, not all SVGs */
+  .error-icon svg,
+  [id^="error"] svg,
+  [class^="error"] svg {
     display: none !important;
     opacity: 0 !important;
   }
@@ -61,12 +52,52 @@
     overflow-x: hidden;
     color: #1e293b;
   }
+
+  /* Ensure sticky header works properly */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Sticky header support */
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
 }
 
 /* Custom animations */
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 

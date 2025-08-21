@@ -78,7 +78,7 @@ function App() {
   if (!browserSupported) {
     return (
       <div className="min-h-screen bg-surface-50">
-        <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-12">
+        <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-12 pt-6">
           <Header />
 
           <main className="max-w-4xl mx-auto">
@@ -106,7 +106,7 @@ function App() {
     <div className="min-h-screen bg-white w-full">
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-6">
         <main className="max-w-4xl mx-auto">
           <div className="space-y-8">
             {/* Show upload and settings only when not processed or when processing */}

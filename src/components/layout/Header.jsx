@@ -1,16 +1,17 @@
 import React from "react";
+import { Music } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-indigo-500 to-purple-700 text-white py-8 sm:py-12 mb-6 sm:mb-8">
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-indigo-500 to-purple-700 text-white shadow-lg backdrop-blur-sm bg-opacity-95">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
-            🎵 Silence Cutter
-          </h1>
-          <p className="text-white text-base sm:text-lg max-w-xl mx-auto px-4">
-            Remove silence from audio files with advanced audio processing
-          </p>
+        <div className="flex items-center justify-center py-3 sm:py-4">
+          <div className="flex items-center space-x-3">
+            <Music className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
+              Silence Cutter
+            </h1>
+          </div>
         </div>
       </div>
     </header>

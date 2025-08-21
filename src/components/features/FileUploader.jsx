@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, Reorder } from "framer-motion";
+import { getFileIcon, actionIcons, uploadIcons } from "../../utils/iconMapping";
 
 const FileUploader = ({
   onFilesSelected,
@@ -68,14 +69,6 @@ const FileUploader = ({
     fileInputRef.current.click();
   };
 
-  const getFileIcon = (fileType) => {
-    if (fileType.includes("mp3")) return "🎵";
-    if (fileType.includes("wav")) return "🎼";
-    if (fileType.includes("m4a") || fileType.includes("mp4")) return "🎧";
-    if (fileType.includes("ogg")) return "🎤";
-    return "🎵";
-  };
-
   const formatFileSize = (bytes) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -95,10 +88,13 @@ const FileUploader = ({
     }
   };
 
-  const handleReorder = useCallback((newOrder) => {
-    setFiles(newOrder);
-    onFilesSelected(newOrder);
-  }, [onFilesSelected]);
+  const handleReorder = useCallback(
+    (newOrder) => {
+      setFiles(newOrder);
+      onFilesSelected(newOrder);
+    },
+    [onFilesSelected]
+  );
 
   const toggleReorderMode = () => {
     setIsReordering(!isReordering);
@@ -115,15 +111,15 @@ const FileUploader = ({
   // Handle escape key to exit reorder mode
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === 'Escape' && isReordering) {
+      if (e.key === "Escape" && isReordering) {
         setIsReordering(false);
         setDragIndex(null);
       }
     };
 
     if (isReordering) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
     }
   }, [isReordering]);
 
@@ -156,14 +152,16 @@ const FileUploader = ({
         <div className="flex justify-center mb-6">
           {files.length > 0 ? (
             <div className="relative">
-              <span className="text-6xl animate-pulse">🎵</span>
+              <div className="w-24 h-24 bg-blue-100 border border-blue-200 rounded-full flex items-center justify-center shadow-sm">
+                <uploadIcons.multiple className="w-12 h-12 text-blue-600 animate-pulse" />
+              </div>
               <span className="absolute -top-2 -right-2 bg-primary-500 text-xs text-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm">
                 {files.length}
               </span>
             </div>
           ) : (
             <div className="w-20 h-20 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center shadow-sm">
-              <span className="text-4xl text-blue-600">📄</span>
+              <uploadIcons.default className="w-10 h-10 text-blue-600" />
             </div>
           )}
         </div>
@@ -214,36 +212,12 @@ const FileUploader = ({
               >
                 {isReordering ? (
                   <span className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      ></path>
-                    </svg>
+                    <actionIcons.check className="w-4 h-4 mr-2" />
                     Done
                   </span>
                 ) : (
                   <span className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                      ></path>
-                    </svg>
+                    <actionIcons.reorder className="w-4 h-4 mr-2" />
                     Reorder
                   </span>
                 )}
@@ -319,11 +293,12 @@ const FileUploader = ({
                   >
                     <div className="flex items-center space-x-4">
                       {/* Order number */}
-                      <motion.div 
+                      <motion.div
                         className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md"
                         animate={{
                           scale: dragIndex === index ? 1.1 : 1,
-                          backgroundColor: dragIndex === index ? "#3b82f6" : "#3b82f6"
+                          backgroundColor:
+                            dragIndex === index ? "#3b82f6" : "#3b82f6",
                         }}
                         transition={{ duration: 0.2 }}
                       >
@@ -332,17 +307,17 @@ const FileUploader = ({
 
                       {/* Drag handle indicator */}
                       <div className="flex flex-col space-y-1 p-2">
-                        <motion.div 
+                        <motion.div
                           className="w-4 h-1 bg-blue-400 rounded-full"
                           whileHover={{ scaleX: 1.2 }}
                           transition={{ duration: 0.2 }}
                         ></motion.div>
-                        <motion.div 
+                        <motion.div
                           className="w-4 h-1 bg-blue-400 rounded-full"
                           whileHover={{ scaleX: 1.2 }}
                           transition={{ duration: 0.2 }}
                         ></motion.div>
-                        <motion.div 
+                        <motion.div
                           className="w-4 h-1 bg-blue-400 rounded-full"
                           whileHover={{ scaleX: 1.2 }}
                           transition={{ duration: 0.2 }}
@@ -351,9 +326,12 @@ const FileUploader = ({
 
                       {/* File icon */}
                       <div className="w-10 h-10 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center">
-                        <span className="text-lg">
-                          {getFileIcon(file.type)}
-                        </span>
+                        {(() => {
+                          const IconComponent = getFileIcon(file.type);
+                          return (
+                            <IconComponent className="w-5 h-5 text-blue-600" />
+                          );
+                        })()}
                       </div>
 
                       {/* File info */}
@@ -378,19 +356,7 @@ const FileUploader = ({
                         onTouchStart={(e) => e.stopPropagation()}
                         className="p-2 hover:bg-red-50 rounded-full transition-colors"
                       >
-                        <svg
-                          className="w-4 h-4 text-red-500"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          ></path>
-                        </svg>
+                        <actionIcons.close className="w-4 h-4 text-red-500" />
                       </button>
                     </div>
                   </motion.div>
@@ -411,9 +377,12 @@ const FileUploader = ({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center">
-                        <span className="text-lg">
-                          {getFileIcon(file.type)}
-                        </span>
+                        {(() => {
+                          const IconComponent = getFileIcon(file.type);
+                          return (
+                            <IconComponent className="w-4 h-4 text-blue-600" />
+                          );
+                        })()}
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-surface-800">
@@ -436,19 +405,7 @@ const FileUploader = ({
                         className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 
                              hover:bg-red-50 rounded-full"
                       >
-                        <svg
-                          className="w-4 h-4 text-red-500"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
+                        <actionIcons.close className="w-4 h-4 text-red-500" />
                       </button>
                     </div>
                   </div>

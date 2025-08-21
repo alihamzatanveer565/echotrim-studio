@@ -1,4 +1,5 @@
 import React from "react";
+import { actionIcons } from "../../utils/iconMapping";
 
 const ProcessingStatus = ({
   isProcessing,
@@ -11,69 +12,97 @@ const ProcessingStatus = ({
   return (
     <div className="mt-6 space-y-6">
       {isProcessing && (
-        <div className="bg-white rounded-xl p-6 sm:p-8 border border-primary-100 shadow-card">
-          <h3 className="text-lg font-semibold mb-4 flex items-center text-surface-800">
-            <svg
-              className="w-5 h-5 mr-2 text-primary-500 animate-spin"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              ></path>
-            </svg>
-            Processing Audio
-          </h3>
+        <div className="bg-white rounded-xl p-8 border border-primary-100 shadow-card">
+          {/* Header with animated icon */}
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-surface-800 flex items-center">
+              <div className="relative mr-3">
+                <div className="w-8 h-8 rounded-full border-4 border-primary-100 border-t-primary-500 animate-spin"></div>
+                <div className="absolute inset-0 w-8 h-8 rounded-full border-4 border-transparent border-t-primary-300 animate-pulse"></div>
+              </div>
+              Processing Audio
+            </h3>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-primary-600">
+                {Math.round(progress)}%
+              </div>
+              <div className="text-sm text-surface-500">Complete</div>
+            </div>
+          </div>
 
-          <div className="relative pt-1">
-            <div className="h-2 bg-surface-100 rounded-full">
+          {/* Progress bar with enhanced styling */}
+          <div className="mb-6">
+            <div className="relative h-3 bg-surface-100 rounded-full overflow-hidden">
               <div
-                className="h-full rounded-full bg-primary-500 relative overflow-hidden transition-all duration-300 ease-out"
+                className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600 relative transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               >
+                {/* Shimmer effect */}
                 <div className="absolute inset-0 opacity-30">
-                  <span className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white to-transparent"></span>
+                  <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white to-transparent"></div>
                 </div>
+                {/* Pulse effect */}
+                <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-primary-300 to-primary-500 opacity-50"></div>
               </div>
             </div>
             <div className="flex justify-between mt-2">
-              <span className="text-sm text-surface-500">Processing...</span>
-              <span className="text-sm font-medium text-primary-600">
-                {Math.round(progress)}%
+              <span className="text-sm text-surface-600 font-medium">
+                Processing your audio files...
+              </span>
+              <span className="text-sm text-primary-600 font-semibold">
+                {Math.round(progress)}% complete
               </span>
             </div>
           </div>
 
-          <div className="mt-6 flex justify-center">
-            <div className="relative w-8 h-8">
-              <div className="absolute inset-0 rounded-full border-3 border-t-primary-500 border-primary-100 animate-spin"></div>
+          {/* Animated processing indicators */}
+          <div className="flex justify-center space-x-4">
+            <div className="flex flex-col items-center">
+              <div
+                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                style={{ animationDelay: "0ms" }}
+              ></div>
+              <span className="text-xs text-surface-500 mt-1">Analyzing</span>
             </div>
+            <div className="flex flex-col items-center">
+              <div
+                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                style={{ animationDelay: "200ms" }}
+              ></div>
+              <span className="text-xs text-surface-500 mt-1">Converting</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                style={{ animationDelay: "400ms" }}
+              ></div>
+              <span className="text-xs text-surface-500 mt-1">Optimizing</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                style={{ animationDelay: "600ms" }}
+              ></div>
+              <span className="text-xs text-surface-500 mt-1">Finalizing</span>
+            </div>
+          </div>
+
+          {/* Status message */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-surface-600">
+              Please wait while we process your audio files. This may take a few
+              moments...
+            </p>
           </div>
         </div>
       )}
 
       {!isProcessing && processingStats && (
-        <div className="bg-white rounded-xl p-6 sm:p-8 border border-green-100 shadow-card">
-          <h3 className="text-lg font-semibold mb-4 flex items-center text-green-600">
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 13l4 4L19 7"
-              ></path>
-            </svg>
+        <div className="bg-white rounded-xl p-8 border border-green-100 shadow-card">
+          <h3 className="text-xl font-semibold mb-6 flex items-center text-green-600">
+            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+              <actionIcons.check className="w-5 h-5 text-green-600" />
+            </div>
             Processing Complete
           </h3>
 
@@ -83,20 +112,7 @@ const ProcessingStatus = ({
                 Processing Time
               </p>
               <p className="text-xl font-semibold text-surface-800 flex items-center">
-                <svg
-                  className="w-4 h-4 mr-1 text-primary-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
+                <actionIcons.clock className="w-4 h-4 mr-1 text-primary-500" />
                 {processingStats.processingTime}s
               </p>
             </div>
@@ -171,22 +187,24 @@ const ProcessingStatus = ({
       )}
 
       {error && (
-        <div className="bg-white rounded-xl p-6 sm:p-8 border border-red-100 shadow-card">
-          <h3 className="text-lg font-semibold mb-3 flex items-center text-red-600">
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
+        <div className="bg-white rounded-xl p-8 border border-red-100 shadow-card">
+          <h3 className="text-xl font-semibold mb-4 flex items-center text-red-600">
+            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
+              <svg
+                className="w-5 h-5 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </div>
             Error
           </h3>
           <div className="bg-red-50 p-4 rounded-lg border border-red-100">
