@@ -17,8 +17,37 @@ const ProcessingStatus = ({
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-surface-800 flex items-center">
               <div className="relative mr-3">
-                <div className="w-8 h-8 rounded-full border-4 border-primary-100 border-t-primary-500 animate-spin"></div>
-                <div className="absolute inset-0 w-8 h-8 rounded-full border-4 border-transparent border-t-primary-300 animate-pulse"></div>
+                {/* Circular progress indicator */}
+                <svg
+                  className="w-8 h-8 transform -rotate-90"
+                  viewBox="0 0 32 32"
+                >
+                  {/* Background circle */}
+                  <circle
+                    cx="16"
+                    cy="16"
+                    r="14"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    fill="none"
+                    className="text-primary-100"
+                  />
+                  {/* Progress circle */}
+                  <circle
+                    cx="16"
+                    cy="16"
+                    r="14"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    fill="none"
+                    className="text-primary-500 transition-all duration-300 ease-out"
+                    strokeDasharray={`${2 * Math.PI * 14}`}
+                    strokeDashoffset={`${
+                      2 * Math.PI * 14 * (1 - progress / 100)
+                    }`}
+                    strokeLinecap="round"
+                  />
+                </svg>
               </div>
               Processing Audio
             </h3>
@@ -45,12 +74,9 @@ const ProcessingStatus = ({
                 <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-primary-300 to-primary-500 opacity-50"></div>
               </div>
             </div>
-            <div className="flex justify-between mt-2">
+            <div className="mt-2">
               <span className="text-sm text-surface-600 font-medium">
                 Processing your audio files...
-              </span>
-              <span className="text-sm text-primary-600 font-semibold">
-                {Math.round(progress)}% complete
               </span>
             </div>
           </div>
