@@ -9,7 +9,6 @@ const FileUploader = ({
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState([]);
   const [isReordering, setIsReordering] = useState(false);
-  const [dragIndex, setDragIndex] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleDragEnter = useCallback((e) => {
@@ -254,9 +253,6 @@ const FileUploader = ({
                 Drag files to reorder them. Files will be merged in the order
                 shown below. Press ESC to exit.
               </p>
-              <div className="mt-2 text-xs text-blue-600">
-                Current order: {files.map((_, i) => i + 1).join(" → ")}
-              </div>
             </motion.div>
           )}
 
@@ -267,61 +263,29 @@ const FileUploader = ({
               values={files}
               onReorder={handleReorder}
               className="space-y-3"
-              layoutScroll
-              dragMomentum={false}
             >
               {files.map((file, index) => (
                 <Reorder.Item
-                  key={`${file.name}-${index}`}
+                  key={file.name + file.size + file.lastModified}
                   value={file}
                   className="cursor-grab active:cursor-grabbing"
-                  onDragStart={() => setDragIndex(index)}
-                  onDragEnd={() => setDragIndex(null)}
+                  whileDrag={{
+                    scale: 1.02,
+                    zIndex: 1,
+                  }}
                 >
-                  <motion.div
-                    layout
-                    className="w-full bg-white rounded-xl p-4 border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-200"
-                    whileDrag={{
-                      scale: 1.02,
-                      boxShadow:
-                        "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                      zIndex: 10,
-                    }}
-                    animate={{
-                      opacity: dragIndex === index ? 0.8 : 1,
-                    }}
-                  >
+                  <div className="w-full bg-white rounded-xl p-4 border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-200">
                     <div className="flex items-center space-x-4">
                       {/* Order number */}
-                      <motion.div
-                        className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md"
-                        animate={{
-                          scale: dragIndex === index ? 1.1 : 1,
-                          backgroundColor:
-                            dragIndex === index ? "#3b82f6" : "#3b82f6",
-                        }}
-                        transition={{ duration: 0.2 }}
-                      >
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
                         {index + 1}
-                      </motion.div>
+                      </div>
 
                       {/* Drag handle indicator */}
                       <div className="flex flex-col space-y-1 p-2">
-                        <motion.div
-                          className="w-4 h-1 bg-blue-400 rounded-full"
-                          whileHover={{ scaleX: 1.2 }}
-                          transition={{ duration: 0.2 }}
-                        ></motion.div>
-                        <motion.div
-                          className="w-4 h-1 bg-blue-400 rounded-full"
-                          whileHover={{ scaleX: 1.2 }}
-                          transition={{ duration: 0.2 }}
-                        ></motion.div>
-                        <motion.div
-                          className="w-4 h-1 bg-blue-400 rounded-full"
-                          whileHover={{ scaleX: 1.2 }}
-                          transition={{ duration: 0.2 }}
-                        ></motion.div>
+                        <div className="w-4 h-1 bg-blue-400 rounded-full"></div>
+                        <div className="w-4 h-1 bg-blue-400 rounded-full"></div>
+                        <div className="w-4 h-1 bg-blue-400 rounded-full"></div>
                       </div>
 
                       {/* File icon */}
@@ -359,7 +323,7 @@ const FileUploader = ({
                         <actionIcons.close className="w-4 h-4 text-red-500" />
                       </button>
                     </div>
-                  </motion.div>
+                  </div>
                 </Reorder.Item>
               ))}
             </Reorder.Group>
