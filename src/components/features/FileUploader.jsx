@@ -8,6 +8,7 @@ const FileUploader = ({
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState([]);
   const [isReordering, setIsReordering] = useState(false);
+  const [dragIndex, setDragIndex] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleDragEnter = useCallback((e) => {
@@ -94,13 +95,14 @@ const FileUploader = ({
     }
   };
 
-  const handleReorder = (newOrder) => {
+  const handleReorder = useCallback((newOrder) => {
     setFiles(newOrder);
     onFilesSelected(newOrder);
-  };
+  }, [onFilesSelected]);
 
   const toggleReorderMode = () => {
     setIsReordering(!isReordering);
+    setDragIndex(null);
   };
 
   // Exit reorder mode if files are reduced to 1 or fewer
@@ -109,6 +111,21 @@ const FileUploader = ({
       setIsReordering(false);
     }
   }, [files.length, isReordering]);
+
+  // Handle escape key to exit reorder mode
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isReordering) {
+        setIsReordering(false);
+        setDragIndex(null);
+      }
+    };
+
+    if (isReordering) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isReordering]);
 
   return (
     <div className="space-y-6">
@@ -261,8 +278,11 @@ const FileUploader = ({
               </div>
               <p className="text-blue-700 text-sm">
                 Drag files to reorder them. Files will be merged in the order
-                shown below.
+                shown below. Press ESC to exit.
               </p>
+              <div className="mt-2 text-xs text-blue-600">
+                Current order: {files.map((_, i) => i + 1).join(" → ")}
+              </div>
             </motion.div>
           )}
 
@@ -281,7 +301,8 @@ const FileUploader = ({
                   key={`${file.name}-${index}`}
                   value={file}
                   className="cursor-grab active:cursor-grabbing"
-                  dragListener={false}
+                  onDragStart={() => setDragIndex(index)}
+                  onDragEnd={() => setDragIndex(null)}
                 >
                   <motion.div
                     layout
@@ -290,20 +311,43 @@ const FileUploader = ({
                       scale: 1.02,
                       boxShadow:
                         "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                      zIndex: 10,
+                    }}
+                    animate={{
+                      opacity: dragIndex === index ? 0.8 : 1,
                     }}
                   >
                     <div className="flex items-center space-x-4">
                       {/* Order number */}
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
+                      <motion.div 
+                        className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md"
+                        animate={{
+                          scale: dragIndex === index ? 1.1 : 1,
+                          backgroundColor: dragIndex === index ? "#3b82f6" : "#3b82f6"
+                        }}
+                        transition={{ duration: 0.2 }}
+                      >
                         {index + 1}
-                      </div>
+                      </motion.div>
 
-                      {/* Drag handle */}
-                      <Reorder.DragHandle className="flex flex-col space-y-1 cursor-grab p-2 hover:bg-blue-50 rounded transition-colors">
-                        <div className="w-4 h-1 bg-blue-400 rounded-full"></div>
-                        <div className="w-4 h-1 bg-blue-400 rounded-full"></div>
-                        <div className="w-4 h-1 bg-blue-400 rounded-full"></div>
-                      </Reorder.DragHandle>
+                      {/* Drag handle indicator */}
+                      <div className="flex flex-col space-y-1 p-2">
+                        <motion.div 
+                          className="w-4 h-1 bg-blue-400 rounded-full"
+                          whileHover={{ scaleX: 1.2 }}
+                          transition={{ duration: 0.2 }}
+                        ></motion.div>
+                        <motion.div 
+                          className="w-4 h-1 bg-blue-400 rounded-full"
+                          whileHover={{ scaleX: 1.2 }}
+                          transition={{ duration: 0.2 }}
+                        ></motion.div>
+                        <motion.div 
+                          className="w-4 h-1 bg-blue-400 rounded-full"
+                          whileHover={{ scaleX: 1.2 }}
+                          transition={{ duration: 0.2 }}
+                        ></motion.div>
+                      </div>
 
                       {/* File icon */}
                       <div className="w-10 h-10 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center">
@@ -331,6 +375,7 @@ const FileUploader = ({
                           removeFile(index);
                         }}
                         onMouseDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
                         className="p-2 hover:bg-red-50 rounded-full transition-colors"
                       >
                         <svg

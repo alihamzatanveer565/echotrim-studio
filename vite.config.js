@@ -15,12 +15,16 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      external: ["@ffmpeg/core-mt"],
       output: {
         manualChunks: {
-          ffmpeg: ["@ffmpeg/ffmpeg", "@ffmpeg/core-mt", "@ffmpeg/util"],
+          ffmpeg: ["@ffmpeg/ffmpeg", "@ffmpeg/util"],
         },
       },
     },
   },
   assetsInclude: ["**/*.wasm"],
+  define: {
+    global: "globalThis",
+  },
 });
