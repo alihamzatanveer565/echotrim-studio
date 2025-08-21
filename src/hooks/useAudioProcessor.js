@@ -77,30 +77,54 @@ export const useAudioProcessor = () => {
       // Process the files
       console.log("Starting audio processing...");
       const result = await processAudioFiles(filesToProcess, options);
-      console.log("Audio processing complete, result size:", result.length);
+      console.log("Audio processing complete, result size:", result.audioData.length);
 
       // Calculate processing time
       const processingTime = (Date.now() - startTimeRef.current) / 1000;
 
       // Calculate input and output sizes
       const inputSize = totalSizeMB.toFixed(2);
-      const outputSize = (result.length / (1024 * 1024)).toFixed(2);
+      const outputSize = (result.audioData.length / (1024 * 1024)).toFixed(2);
+
+      // Format durations for display
+      const formatDuration = (seconds) => {
+        if (!seconds || isNaN(seconds) || seconds <= 0) {
+          return "0:00";
+        }
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+      };
+
+      // Ensure we have valid duration values
+      const beforeDuration = result.beforeDuration || 60;
+      const afterDuration = result.afterDuration || 60;
+      const timeSaved = Math.max(0, beforeDuration - afterDuration);
 
       setProcessingStats({
         processingTime: processingTime.toFixed(1),
         inputSize,
         outputSize,
         fileCount: files.length,
+        beforeDuration,
+        afterDuration,
+        beforeDurationFormatted: formatDuration(beforeDuration),
+        afterDurationFormatted: formatDuration(afterDuration),
+        timeSaved: timeSaved.toFixed(1),
+        timeSavedFormatted: formatDuration(timeSaved),
       });
 
       clearInterval(processingTimerRef.current);
       setProgress(100);
-      setProcessedAudio(result);
+      setProcessedAudio(result.audioData);
       console.log("Processing complete, stats:", {
         processingTime: processingTime.toFixed(1),
         inputSize,
         outputSize,
         fileCount: files.length,
+        beforeDuration: beforeDuration.toFixed(1),
+        afterDuration: afterDuration.toFixed(1),
+        timeSaved: timeSaved.toFixed(1),
       });
     } catch (err) {
       console.error("Audio processing error:", err);

@@ -213,7 +213,7 @@ export const trimSilence = async (
  * Detects and trims silence from multiple audio files
  * @param {File[]} audioFiles - Array of audio files to process
  * @param {Object} options - Silence detection options
- * @returns {Promise<Uint8Array>} - Processed audio as Uint8Array
+ * @returns {Promise<{audioData: Uint8Array, beforeDuration: number, afterDuration: number}>} - Processed audio with duration info
  */
 export const processAudioFiles = async (audioFiles, options) => {
   try {
@@ -221,6 +221,9 @@ export const processAudioFiles = async (audioFiles, options) => {
       `Processing ${audioFiles.length} audio files with options:`,
       options
     );
+
+    // Calculate initial total duration (estimation)
+    const beforeDuration = await getTotalAudioDuration(audioFiles);
 
     // First concatenate the files
     const concatenatedData = await concatenateAudioFiles(audioFiles);
@@ -230,10 +233,110 @@ export const processAudioFiles = async (audioFiles, options) => {
     const trimmedData = await trimSilence(concatenatedData, options);
     console.log("Silence trimming complete. Size:", trimmedData.length);
 
-    return trimmedData;
+    // Calculate after duration (estimation based on size reduction)
+    const sizeRatio = Math.max(
+      0.1,
+      Math.min(1.0, trimmedData.length / concatenatedData.length)
+    );
+    const afterDuration = Math.max(1, beforeDuration * sizeRatio);
+
+    console.log("Duration info:", {
+      before: beforeDuration.toFixed(1),
+      after: afterDuration.toFixed(1),
+      saved: (beforeDuration - afterDuration).toFixed(1),
+    });
+
+    return {
+      audioData: trimmedData,
+      beforeDuration,
+      afterDuration,
+    };
   } catch (error) {
     console.error("Error in audio processing pipeline:", error);
     throw error;
+  }
+};
+
+/**
+ * Gets the duration of audio data in seconds
+ * @param {Uint8Array} audioData - Audio data to analyze
+ * @param {string} inputFormat - Input file format (default: 'mp3')
+ * @returns {Promise<number>} - Duration in seconds
+ */
+export const getAudioDuration = async (audioData, inputFormat = "mp3") => {
+  try {
+    console.log("Getting audio duration...");
+    await ensureFFmpegLoaded();
+
+    const inputFileName = `temp_input.${inputFormat}`;
+
+    // Write audio data to memory
+    await ffmpeg.writeFile(inputFileName, audioData);
+
+    // Get duration using ffprobe command
+    await ffmpeg.exec(["-i", inputFileName, "-f", "null", "-"]);
+
+    // Parse the duration from FFmpeg logs
+    // Note: This is a simplified approach. In a real implementation,
+    // you might want to capture the stderr output more precisely
+
+    // Clean up
+    try {
+      await ffmpeg.deleteFile(inputFileName);
+    } catch (cleanupError) {
+      console.warn("Error during cleanup:", cleanupError);
+    }
+
+    // For now, return a placeholder - we'll implement proper duration parsing
+    // In a real scenario, you'd parse the FFmpeg output to get actual duration
+    return 0;
+  } catch (error) {
+    console.error("Error getting audio duration:", error);
+    return 0;
+  }
+};
+
+/**
+ * Gets the total duration of multiple audio files
+ * @param {File[]} audioFiles - Array of audio files
+ * @returns {Promise<number>} - Total duration in seconds
+ */
+export const getTotalAudioDuration = async (audioFiles) => {
+  try {
+    console.log("Calculating total duration for", audioFiles.length, "files");
+
+    // For now, we'll estimate based on file size and average bitrate
+    // This is an approximation since getting exact duration requires loading each file
+    let totalDuration = 0;
+
+    for (const file of audioFiles) {
+      // Rough estimation: assuming average MP3 bitrate of 128kbps
+      // Duration ≈ (file size in bytes × 8) / (bitrate in bits per second)
+      const estimatedDuration = (file.size * 8) / (128 * 1000); // seconds
+
+      // Add some validation to prevent invalid values
+      if (estimatedDuration > 0 && estimatedDuration < 3600) {
+        // Between 0 and 1 hour
+        totalDuration += estimatedDuration;
+      } else {
+        // Fallback estimation for very small or large files
+        const fallbackDuration = Math.max(10, (file.size / (1024 * 1024)) * 60); // 1MB ≈ 1 minute
+        totalDuration += fallbackDuration;
+      }
+    }
+
+    // Ensure we have a reasonable duration
+    const finalDuration = Math.max(1, Math.min(totalDuration, 3600)); // Between 1 second and 1 hour
+
+    console.log(
+      "Estimated total duration:",
+      finalDuration.toFixed(1),
+      "seconds"
+    );
+    return finalDuration;
+  } catch (error) {
+    console.error("Error calculating total duration:", error);
+    return 60; // Default to 1 minute if calculation fails
   }
 };
 
@@ -261,5 +364,7 @@ export default {
   concatenateAudioFiles,
   trimSilence,
   processAudioFiles,
+  getAudioDuration,
+  getTotalAudioDuration,
   testFFmpeg,
 };

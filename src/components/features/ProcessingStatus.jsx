@@ -132,6 +132,55 @@ const ProcessingStatus = ({
             Processing Complete
           </h3>
 
+          {/* Duration comparison section */}
+          <div className="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+            <h4 className="text-lg font-semibold text-blue-800 mb-3 text-center">
+              Duration Comparison
+            </h4>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-blue-600 text-sm font-medium mb-1">
+                  Before Processing
+                </p>
+                <p className="text-2xl font-bold text-blue-800">
+                  {processingStats.beforeDurationFormatted || "0:00"}
+                </p>
+              </div>
+              <div className="flex items-center justify-center">
+                <svg
+                  className="w-6 h-6 text-blue-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 5l7 7-7 7"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <p className="text-green-600 text-sm font-medium mb-1">
+                  After Processing
+                </p>
+                <p className="text-2xl font-bold text-green-800">
+                  {processingStats.afterDurationFormatted || "0:00"}
+                </p>
+              </div>
+            </div>
+            {processingStats.timeSavedFormatted && (
+              <div className="mt-3 text-center">
+                <p className="text-sm text-blue-600">
+                  <span className="font-semibold text-green-600">
+                    Time Saved: {processingStats.timeSavedFormatted}
+                  </span>
+                </p>
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-2 gap-6">
             <div className="bg-surface-50 p-4 rounded-lg border border-surface-100">
               <p className="text-surface-500 text-sm mb-1 font-medium">
