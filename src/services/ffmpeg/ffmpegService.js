@@ -161,7 +161,7 @@ export const concatenateAudioFiles = async (audioFiles) => {
  */
 export const trimSilence = async (
   inputData,
-  options = { threshold: -30, duration: 0.1 }
+  options = { threshold: -30, duration: 0.6 }
 ) => {
   try {
     console.log("Starting silence trimming with options:", options);

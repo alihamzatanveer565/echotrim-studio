@@ -9,7 +9,7 @@ import { useAudioProcessor } from "./hooks/useAudioProcessor";
 
 function App() {
   const [files, setFiles] = useState([]);
-  const [settings, setSettings] = useState({ threshold: -30, duration: 0.1 });
+  const [settings, setSettings] = useState({ threshold: -30, duration: 0.6 });
   const [browserSupported, setBrowserSupported] = useState(true);
 
   const {

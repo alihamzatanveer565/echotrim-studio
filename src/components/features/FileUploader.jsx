@@ -46,22 +46,48 @@ const FileUploader = ({
       });
 
       if (droppedFiles.length > 0) {
-        setFiles(droppedFiles);
-        onFilesSelected(droppedFiles);
+        const newFiles = [...files, ...droppedFiles];
+        // Sort files by creation date (oldest first)
+        const sortedFiles = newFiles.sort((a, b) => {
+          const dateA =
+            a.lastModified || a.webkitRelativePath
+              ? new Date(a.lastModified)
+              : new Date();
+          const dateB =
+            b.lastModified || b.webkitRelativePath
+              ? new Date(b.lastModified)
+              : new Date();
+          return dateA - dateB;
+        });
+        setFiles(sortedFiles);
+        onFilesSelected(sortedFiles);
       }
     },
-    [onFilesSelected]
+    [onFilesSelected, files]
   );
 
   const handleFileInputChange = useCallback(
     (e) => {
       const selectedFiles = Array.from(e.target.files);
       if (selectedFiles.length > 0) {
-        setFiles(selectedFiles);
-        onFilesSelected(selectedFiles);
+        const newFiles = [...files, ...selectedFiles];
+        // Sort files by creation date (oldest first)
+        const sortedFiles = newFiles.sort((a, b) => {
+          const dateA =
+            a.lastModified || a.webkitRelativePath
+              ? new Date(a.lastModified)
+              : new Date();
+          const dateB =
+            b.lastModified || b.webkitRelativePath
+              ? new Date(b.lastModified)
+              : new Date();
+          return dateA - dateB;
+        });
+        setFiles(sortedFiles);
+        onFilesSelected(sortedFiles);
       }
     },
-    [onFilesSelected]
+    [onFilesSelected, files]
   );
 
   const handleBrowseClick = () => {

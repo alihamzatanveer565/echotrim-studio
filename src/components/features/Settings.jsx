@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const Settings = ({ onChange, disabled = false }) => {
   const [threshold, setThreshold] = useState(-30);
-  const [duration, setDuration] = useState(0.1);
+  const [duration, setDuration] = useState(0.6);
   const [isExpanded, setIsExpanded] = useState(true);
 
   useEffect(() => {
