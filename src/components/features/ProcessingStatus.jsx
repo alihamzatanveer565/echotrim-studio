@@ -12,7 +12,7 @@ const ProcessingStatus = ({
   return (
     <div className="mt-6 space-y-6">
       {isProcessing && (
-        <div className="bg-white rounded-xl p-8 border border-primary-100 shadow-card">
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-card">
           {/* Header with animated icon */}
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-surface-800 flex items-center">
@@ -30,7 +30,7 @@ const ProcessingStatus = ({
                     stroke="currentColor"
                     strokeWidth="3"
                     fill="none"
-                    className="text-primary-100"
+                    className="text-slate-200"
                   />
                   {/* Progress circle */}
                   <circle
@@ -40,7 +40,7 @@ const ProcessingStatus = ({
                     stroke="currentColor"
                     strokeWidth="3"
                     fill="none"
-                    className="text-primary-500 transition-all duration-300 ease-out"
+                    className="text-blue-600 transition-all duration-300 ease-out"
                     strokeDasharray={`${2 * Math.PI * 14}`}
                     strokeDashoffset={`${
                       2 * Math.PI * 14 * (1 - progress / 100)
@@ -52,7 +52,7 @@ const ProcessingStatus = ({
               Processing Audio
             </h3>
             <div className="text-right">
-              <div className="text-2xl font-bold text-primary-600">
+              <div className="text-2xl font-bold text-blue-600">
                 {Math.round(progress)}%
               </div>
               <div className="text-sm text-surface-500">Complete</div>
@@ -61,9 +61,9 @@ const ProcessingStatus = ({
 
           {/* Progress bar with enhanced styling */}
           <div className="mb-6">
-            <div className="relative h-3 bg-surface-100 rounded-full overflow-hidden">
+            <div className="relative h-3 overflow-hidden rounded-full bg-slate-100">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600 relative transition-all duration-500 ease-out"
+                className="relative h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               >
                 {/* Shimmer effect */}
@@ -71,7 +71,7 @@ const ProcessingStatus = ({
                   <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white to-transparent"></div>
                 </div>
                 {/* Pulse effect */}
-                <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-primary-300 to-primary-500 opacity-50"></div>
+                <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-blue-300 to-cyan-400 opacity-50"></div>
               </div>
             </div>
             <div className="mt-2">
@@ -85,28 +85,28 @@ const ProcessingStatus = ({
           <div className="flex justify-center space-x-4">
             <div className="flex flex-col items-center">
               <div
-                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                className="h-3 w-3 animate-bounce rounded-full bg-blue-600"
                 style={{ animationDelay: "0ms" }}
               ></div>
               <span className="text-xs text-surface-500 mt-1">Analyzing</span>
             </div>
             <div className="flex flex-col items-center">
               <div
-                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                className="h-3 w-3 animate-bounce rounded-full bg-blue-600"
                 style={{ animationDelay: "200ms" }}
               ></div>
               <span className="text-xs text-surface-500 mt-1">Converting</span>
             </div>
             <div className="flex flex-col items-center">
               <div
-                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                className="h-3 w-3 animate-bounce rounded-full bg-blue-600"
                 style={{ animationDelay: "400ms" }}
               ></div>
               <span className="text-xs text-surface-500 mt-1">Optimizing</span>
             </div>
             <div className="flex flex-col items-center">
               <div
-                className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
+                className="h-3 w-3 animate-bounce rounded-full bg-blue-600"
                 style={{ animationDelay: "600ms" }}
               ></div>
               <span className="text-xs text-surface-500 mt-1">Finalizing</span>
@@ -124,31 +124,31 @@ const ProcessingStatus = ({
       )}
 
       {!isProcessing && processingStats && (
-        <div className="bg-white rounded-xl p-8 border border-green-100 shadow-card">
-          <h3 className="text-xl font-semibold mb-6 flex items-center text-green-600">
-            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-              <actionIcons.check className="w-5 h-5 text-green-600" />
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-card">
+          <h3 className="mb-6 flex items-center text-xl font-semibold text-emerald-600">
+            <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100">
+              <actionIcons.check className="h-5 w-5 text-emerald-600" />
             </div>
             Processing Complete
           </h3>
 
           {/* Duration comparison section */}
-          <div className="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
-            <h4 className="text-lg font-semibold text-blue-800 mb-3 text-center">
+          <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-5">
+            <h4 className="mb-4 text-center text-lg font-semibold text-blue-900">
               Duration Comparison
             </h4>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <p className="text-blue-600 text-sm font-medium mb-1">
+                <p className="mb-1 text-sm font-medium text-blue-700">
                   Before Processing
                 </p>
-                <p className="text-2xl font-bold text-blue-800">
+                <p className="text-3xl font-bold text-blue-900">
                   {processingStats.beforeDurationFormatted || "0:00"}
                 </p>
               </div>
               <div className="flex items-center justify-center">
                 <svg
-                  className="w-6 h-6 text-blue-500"
+                  className="h-6 w-6 text-blue-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -162,18 +162,18 @@ const ProcessingStatus = ({
                 </svg>
               </div>
               <div>
-                <p className="text-green-600 text-sm font-medium mb-1">
+                <p className="mb-1 text-sm font-medium text-emerald-600">
                   After Processing
                 </p>
-                <p className="text-2xl font-bold text-green-800">
+                <p className="text-3xl font-bold text-emerald-700">
                   {processingStats.afterDurationFormatted || "0:00"}
                 </p>
               </div>
             </div>
             {processingStats.timeSavedFormatted && (
               <div className="mt-3 text-center">
-                <p className="text-sm text-blue-600">
-                  <span className="font-semibold text-green-600">
+                <p className="text-sm text-blue-700">
+                  <span className="font-semibold text-emerald-600">
                     Time Saved: {processingStats.timeSavedFormatted}
                   </span>
                 </p>
@@ -181,23 +181,23 @@ const ProcessingStatus = ({
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
-            <div className="bg-surface-50 p-4 rounded-lg border border-surface-100">
-              <p className="text-surface-500 text-sm mb-1 font-medium">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="mb-1 text-sm font-medium text-slate-500">
                 Processing Time
               </p>
-              <p className="text-xl font-semibold text-surface-800 flex items-center">
-                <actionIcons.clock className="w-4 h-4 mr-1 text-primary-500" />
+              <p className="flex items-center text-xl font-semibold text-slate-800">
+                <actionIcons.clock className="mr-2 h-4 w-4 text-blue-600" />
                 {processingStats.processingTime}s
               </p>
             </div>
-            <div className="bg-surface-50 p-4 rounded-lg border border-surface-100">
-              <p className="text-surface-500 text-sm mb-1 font-medium">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="mb-1 text-sm font-medium text-slate-500">
                 Files Processed
               </p>
-              <p className="text-xl font-semibold text-surface-800 flex items-center">
+              <p className="flex items-center text-xl font-semibold text-slate-800">
                 <svg
-                  className="w-4 h-4 mr-1 text-primary-500"
+                  className="mr-2 h-4 w-4 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -213,13 +213,13 @@ const ProcessingStatus = ({
                 {processingStats.fileCount}
               </p>
             </div>
-            <div className="bg-surface-50 p-4 rounded-lg border border-surface-100">
-              <p className="text-surface-500 text-sm mb-1 font-medium">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="mb-1 text-sm font-medium text-slate-500">
                 Input Size
               </p>
-              <p className="text-xl font-semibold text-surface-800 flex items-center">
+              <p className="flex items-center text-xl font-semibold text-slate-800">
                 <svg
-                  className="w-4 h-4 mr-1 text-primary-500"
+                  className="mr-2 h-4 w-4 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -235,13 +235,13 @@ const ProcessingStatus = ({
                 {processingStats.inputSize} MB
               </p>
             </div>
-            <div className="bg-surface-50 p-4 rounded-lg border border-surface-100">
-              <p className="text-surface-500 text-sm mb-1 font-medium">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="mb-1 text-sm font-medium text-slate-500">
                 Output Size
               </p>
-              <p className="text-xl font-semibold text-surface-800 flex items-center">
+              <p className="flex items-center text-xl font-semibold text-slate-800">
                 <svg
-                  className="w-4 h-4 mr-1 text-primary-500"
+                  className="mr-2 h-4 w-4 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -262,11 +262,11 @@ const ProcessingStatus = ({
       )}
 
       {error && (
-        <div className="bg-white rounded-xl p-8 border border-red-100 shadow-card">
-          <h3 className="text-xl font-semibold mb-4 flex items-center text-red-600">
-            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
+        <div className="rounded-2xl border border-red-100 bg-white p-8 shadow-card">
+          <h3 className="mb-4 flex items-center text-xl font-semibold text-red-600">
+            <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-red-100">
               <svg
-                className="w-5 h-5 text-red-600"
+                className="h-5 w-5 text-red-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -282,7 +282,7 @@ const ProcessingStatus = ({
             </div>
             Error
           </h3>
-          <div className="bg-red-50 p-4 rounded-lg border border-red-100">
+          <div className="rounded-lg border border-red-100 bg-red-50 p-4">
             <p className="text-red-600">{error}</p>
           </div>
         </div>

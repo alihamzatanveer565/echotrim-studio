@@ -1,29 +1,6 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  overflow: hidden; /* Prevent any overflow */
-  position: relative; /* Ensure proper stacking context */
-}
-
-/* Hide error icons and overlays */
-#root::before,
-#root::after,
-img[src*="error"],
-svg[id*="error"],
-div[id*="error-overlay"],
-div[class*="error-overlay"] {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-
-/* Remove unnecessary styling */
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }

@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { motion } from "framer-motion";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import FileUploader from "./components/features/FileUploader";
@@ -77,20 +78,20 @@ function App() {
 
   if (!browserSupported) {
     return (
-      <div className="min-h-screen bg-surface-50">
-        <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-12 pt-6">
+      <div className="min-h-screen bg-brand-bg px-6 py-10">
+        <div className="mx-auto w-full max-w-5xl">
           <Header />
 
-          <main className="max-w-4xl mx-auto">
-            <div className="bg-red-50 border border-red-200 rounded-xl p-8 shadow-card">
-              <h3 className="text-xl font-semibold mb-4 text-red-600">
+          <main className="mx-auto mt-10 max-w-4xl">
+            <div className="rounded-2xl border border-red-400/30 bg-red-500/10 p-8 backdrop-blur-md">
+              <h3 className="mb-4 text-xl font-semibold text-red-200">
                 Browser Not Supported
               </h3>
-              <p className="text-surface-700">
+              <p className="text-red-50/90">
                 This application requires a modern browser with WebAssembly and
                 SharedArrayBuffer support.
               </p>
-              <p className="mt-4 text-surface-700">
+              <p className="mt-4 text-red-50/90">
                 Please try using the latest version of Chrome, Edge, or Firefox.
               </p>
             </div>
@@ -103,22 +104,44 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white w-full">
+    <div className="relative min-h-screen w-full overflow-hidden bg-brand-bg">
+      <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-35" />
+      <div className="pointer-events-none absolute inset-x-0 top-[-180px] mx-auto h-[520px] w-[920px] rounded-full bg-gradient-to-r from-blue-500/20 via-sky-500/20 to-cyan-300/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-16 -right-16 h-72 w-72 rounded-full bg-blue-300/15 blur-3xl" />
+
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-6">
-        <main className="max-w-4xl mx-auto">
-          <div className="space-y-8">
+      <div className="relative mx-auto w-full max-w-5xl px-4 pb-8 pt-8 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-4xl space-y-8">
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl sm:p-8"
+          >
+            <p className="mb-4 inline-flex rounded-full border border-blue-300/40 bg-blue-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-100">
+              Browser-based audio cleanup
+            </p>
+            <h2 className="text-2xl font-semibold leading-tight text-white sm:text-4xl">
+              Trim silence from your audio in seconds.
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm text-slate-300 sm:text-base">
+              Upload, reorder, tune your silence settings, and export a polished
+              WAV file without sending your recordings to any server.
+            </p>
+          </motion.section>
+
+          <div className="space-y-8 rounded-3xl border border-white/10 bg-surface-900/45 p-4 shadow-xl backdrop-blur-xl sm:p-8">
             {/* Show upload and settings only when not processed or when processing */}
             {(!hasProcessedAudio || isProcessing) && (
               <>
                 {/* Upload Area */}
-                <div className="bg-white rounded-xl">
+                <div className="rounded-2xl border border-white/20 bg-white/95 p-3 shadow-xl sm:p-4">
                   <FileUploader onFilesSelected={handleFilesSelected} />
                 </div>
 
                 {/* Settings Area */}
-                <div className="bg-white rounded-xl shadow-sm">
+                <div className="rounded-2xl border border-white/20 bg-white/95 shadow-xl">
                   <Settings
                     onChange={handleSettingsChange}
                     disabled={isProcessing}
@@ -130,7 +153,7 @@ function App() {
                   <div className="flex justify-center">
                     <button
                       onClick={handleProcessClick}
-                      className="px-6 sm:px-8 py-3 bg-green-500 hover:bg-green-600 text-white font-medium text-base sm:text-lg rounded-lg transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                      className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-blue-700/30 transition-all duration-300 hover:scale-[1.02] hover:from-blue-500 hover:to-cyan-500 sm:text-lg"
                       disabled={isProcessing}
                     >
                       Process Audio Files
@@ -142,12 +165,12 @@ function App() {
 
             {/* Error Message (custom styling) */}
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-6 shadow-sm">
-                <h3 className="text-xl font-semibold mb-4 text-red-600 flex items-center">
+              <div className="rounded-2xl border border-red-400/30 bg-red-500/10 p-6">
+                <h3 className="mb-4 flex items-center text-xl font-semibold text-red-200">
                   <span className="mr-2">⚠️</span>
                   Error
                 </h3>
-                <p className="text-surface-700">{error}</p>
+                <p className="text-red-50/90">{error}</p>
               </div>
             )}
 
@@ -169,8 +192,9 @@ function App() {
               <div className="flex justify-center">
                 <button
                   onClick={handleProcessAgain}
-                  className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium text-lg rounded-lg transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  className="inline-flex items-center justify-center rounded-xl border border-blue-300/35 bg-blue-500/10 px-8 py-3 text-base font-semibold text-blue-100 shadow-lg shadow-blue-900/20 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300/60 hover:bg-blue-500/20 hover:shadow-blue-800/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 sm:text-lg"
                 >
+                  <span className="mr-2 inline-block h-2 w-2 rounded-full bg-cyan-300" />
                   Process Another Audio
                 </button>
               </div>

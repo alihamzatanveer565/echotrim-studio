@@ -9,6 +9,7 @@ const FileUploader = ({
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState([]);
   const [isReordering, setIsReordering] = useState(false);
+  const [, setDragIndex] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleDragEnter = useCallback((e) => {
@@ -154,10 +155,10 @@ const FileUploader = ({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`border-2 border-dashed rounded-xl p-6 sm:p-8 lg:p-12 text-center transition-all duration-300 cursor-pointer ${
+        className={`rounded-2xl border-2 border-dashed p-6 text-center transition-all duration-300 cursor-pointer sm:p-8 lg:p-12 ${
           isDragging
-            ? "border-primary-400 bg-primary-50 scale-[1.01]"
-            : "border-primary-300 hover:border-primary-400 bg-white hover:bg-surface-50"
+            ? "scale-[1.01] border-blue-500 bg-blue-50"
+            : "border-slate-300 bg-white hover:border-blue-400 hover:bg-slate-50"
         }`}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
@@ -177,16 +178,16 @@ const FileUploader = ({
         <div className="flex justify-center mb-6">
           {files.length > 0 ? (
             <div className="relative">
-              <div className="w-24 h-24 bg-blue-100 border border-blue-200 rounded-full flex items-center justify-center shadow-sm">
-                <uploadIcons.multiple className="w-12 h-12 text-blue-600 animate-pulse" />
+              <div className="flex h-24 w-24 items-center justify-center rounded-full border border-blue-200 bg-blue-100 shadow-sm">
+                <uploadIcons.multiple className="h-12 w-12 text-blue-600 animate-pulse" />
               </div>
-              <span className="absolute -top-2 -right-2 bg-primary-500 text-xs text-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm">
+              <span className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-blue-600 text-xs font-semibold text-white shadow-sm">
                 {files.length}
               </span>
             </div>
           ) : (
-            <div className="w-20 h-20 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center shadow-sm">
-              <uploadIcons.default className="w-10 h-10 text-blue-600" />
+            <div className="flex h-20 w-20 items-center justify-center rounded-full border border-blue-200 bg-blue-100 shadow-sm">
+              <uploadIcons.default className="h-10 w-10 text-blue-600" />
             </div>
           )}
         </div>
@@ -196,7 +197,7 @@ const FileUploader = ({
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-surface-800">
               {files.length} file{files.length !== 1 ? "s" : ""} selected
             </h2>
-            <p className="text-sm text-primary-600 hover:text-primary-700 transition-colors">
+            <p className="text-sm text-slate-600 transition-colors">
               Click to select different files
             </p>
           </>
@@ -223,16 +224,16 @@ const FileUploader = ({
         >
           {/* Header with reorder toggle */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-            <h3 className="text-lg font-semibold text-surface-800">
+            <h3 className="text-lg font-semibold text-slate-800">
               Selected Files
             </h3>
             {files.length > 1 && (
               <button
                 onClick={toggleReorderMode}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm ${
+                className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
                   isReordering
-                    ? "bg-green-500 hover:bg-green-600 text-white shadow-md"
-                    : "bg-blue-100 hover:bg-blue-200 text-blue-700 border border-blue-200"
+                    ? "bg-blue-600 text-white shadow-md hover:bg-blue-700"
+                    : "border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
                 }`}
               >
                 {isReordering ? (
@@ -255,7 +256,7 @@ const FileUploader = ({
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center shadow-sm"
+              className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-center"
             >
               <div className="flex items-center justify-center space-x-2 mb-2">
                 <svg
@@ -361,30 +362,29 @@ const FileUploader = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="w-full bg-white rounded-lg p-4 border border-surface-200 shadow-sm hover:shadow-md
-                       transition-all duration-200 group relative"
+                  className="group relative w-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:border-blue-200 hover:shadow-md"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-blue-100 bg-blue-50">
                         {(() => {
                           const IconComponent = getFileIcon(file.type);
                           return (
-                            <IconComponent className="w-4 h-4 text-blue-600" />
+                            <IconComponent className="h-5 w-5 text-blue-600" />
                           );
                         })()}
                       </div>
-                      <div>
-                        <p className="text-sm font-semibold text-surface-800">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-slate-800">
                           {file.name}
                         </p>
-                        <p className="text-xs text-surface-500">
+                        <p className="text-xs text-slate-500">
                           {file.type.split("/")[1]?.toUpperCase() || "AUDIO"}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <span className="text-sm text-surface-600 font-medium">
+                      <span className="rounded-md bg-slate-100 px-2 py-1 text-sm font-medium text-slate-700">
                         {formatFileSize(file.size)}
                       </span>
                       <button
@@ -392,8 +392,7 @@ const FileUploader = ({
                           e.stopPropagation();
                           removeFile(index);
                         }}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 
-                             hover:bg-red-50 rounded-full"
+                        className="rounded-full p-1.5 opacity-0 transition-all duration-200 group-hover:opacity-100 hover:bg-red-50"
                       >
                         <actionIcons.close className="w-4 h-4 text-red-500" />
                       </button>

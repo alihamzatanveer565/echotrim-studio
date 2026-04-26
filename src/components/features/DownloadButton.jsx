@@ -10,38 +10,40 @@ const DownloadButton = ({ downloadUrl, fileName = "cleaned_audio.wav" }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-xl p-8 shadow-sm border border-surface-300 w-full max-w-md"
+        className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-card sm:p-8"
       >
-        {/* Header */}
-        <div className="text-center mb-6">
-          <div className="w-14 h-14 mx-auto bg-green-500 rounded-lg flex items-center justify-center shadow-sm">
-            <actionIcons.volume className="w-7 h-7 text-white" />
+        <div className="mx-auto w-full max-w-xl">
+          {/* Header */}
+          <div className="mb-6 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-md">
+              <actionIcons.volume className="h-7 w-7 text-white" />
+            </div>
+            <h3 className="mt-3 text-lg font-semibold text-slate-800">
+              Cleaned Audio Ready
+            </h3>
+            <p className="text-sm text-slate-600">Download your file below</p>
           </div>
-          <h3 className="text-lg font-semibold text-surface-800 mt-3">
-            Cleaned Audio Ready
-          </h3>
-          <p className="text-sm text-surface-600">Download your file below</p>
-        </div>
 
-        {/* Download button */}
-        <motion.a
-          whileTap={{ scale: 0.97 }}
-          href={downloadUrl}
-          download={fileName}
-          className="relative w-full inline-flex items-center justify-center px-6 py-4 rounded-lg font-medium transition-all duration-300 border border-surface-300 bg-white hover:bg-surface-50 text-surface-700 hover:border-surface-400"
-        >
-          <div className="flex items-center">
-            <actionIcons.download className="w-5 h-5 mr-2" />
-            Download Cleaned Audio
+          {/* Download button */}
+          <motion.a
+            whileTap={{ scale: 0.97 }}
+            href={downloadUrl}
+            download={fileName}
+            className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-4 font-semibold text-white shadow-lg shadow-blue-700/20 transition-all duration-300 hover:from-blue-500 hover:to-cyan-500"
+          >
+            <div className="flex items-center">
+              <actionIcons.download className="mr-2 h-5 w-5" />
+              Download Cleaned Audio
+            </div>
+          </motion.a>
+
+          {/* File Info */}
+          <div className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center">
+            <p className="flex items-center justify-center text-sm font-medium text-emerald-700">
+              <actionIcons.check className="mr-2 h-4 w-4" />
+              WAV Format – High Quality
+            </p>
           </div>
-        </motion.a>
-
-        {/* File Info */}
-        <div className="mt-5 text-center bg-white p-3 rounded-lg border border-surface-300">
-          <p className="flex items-center justify-center text-green-600 text-sm font-medium">
-            <actionIcons.check className="w-4 h-4 mr-2" />
-            WAV Format – High Quality
-          </p>
         </div>
       </motion.div>
     </div>

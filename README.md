@@ -1,257 +1,79 @@
-# FFmpeg Web - Audio Silence Removal Tool
+# EchoTrim Studio
 
-A modern web application that allows users to upload multiple audio files, reorder them, and automatically remove silence using FFmpeg.wasm. Built with React, Vite, and Tailwind CSS.
+EchoTrim Studio is a modern browser app that removes silence from audio files using FFmpeg.wasm.  
+It is designed as a portfolio-ready project with an eye-catching neon UI, smooth motion, and fully local processing.
 
-## ✨ Features
+## Features
 
-- **Multi-file Upload**: Upload up to 8 audio files (MP3, WAV, etc.)
-- **Drag & Drop Reordering**: Intuitive drag-and-drop interface to reorder audio files before processing
-- **Silence Removal**: Automatically detect and remove silence using configurable thresholds
-- **Real-time Processing**: Live progress tracking with visual feedback
-- **Duration Comparison**: See before/after duration statistics
-- **File Size Optimization**: Reduce file sizes by removing unnecessary silence
-- **Browser-based**: No server required - everything runs in your browser
-- **Modern UI**: Clean, responsive design with smooth animations
+- Upload up to 8 audio files and reorder them before processing
+- Configure silence threshold and minimum silence duration
+- Process entirely in-browser (no server-side audio upload)
+- Track progress with visual feedback
+- Review before/after duration and file size stats
+- Download cleaned WAV output
 
-## 🚀 Live Demo
+## Tech Stack
 
-[Deploy your own instance](#deployment) or try the live demo (if available).
+- React + Vite
+- Tailwind CSS
+- Framer Motion
+- FFmpeg.wasm
 
-## 🛠️ Tech Stack
-
-- **Frontend**: React 18, Vite
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Audio Processing**: FFmpeg.wasm
-- **Build Tool**: Vite
-- **Deployment**: Vercel
-
-## 📋 Prerequisites
-
-- Node.js 16+
-- npm or yarn
-- Modern browser with WebAssembly support
-
-## 🏗️ Installation & Setup
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/yourusername/ffmpeg-web.git
-cd ffmpeg-web
-```
-
-### 2. Install dependencies
+## Local Development
 
 ```bash
 npm install
-```
-
-### 3. Start the development server
-
-```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`
+App runs on `http://localhost:5173`.
 
-### 4. Build for production
+## Build
 
 ```bash
 npm run build
+npm run preview
 ```
 
-## 🎯 Usage
+## Deploy To Your Own Vercel
 
-1. **Upload Audio Files**: Click the upload area or drag files to upload up to 8 audio files
-2. **Reorder Files**: Drag and drop files to reorder them in your desired sequence
-3. **Configure Settings**: Adjust silence detection threshold and minimum duration
-4. **Process Audio**: Click "Process Audio Files" to start processing
-5. **Download Result**: Once complete, download the processed audio file
+This repository already includes `vercel.json` with headers required by FFmpeg.wasm.
 
-### Settings Explained
+### Option A: Vercel Dashboard
 
-- **Silence Threshold**: Audio level below which is considered silence (default: -30dB)
-- **Minimum Duration**: Minimum silence duration to remove (default: 0.1 seconds)
+1. Push this code to your own GitHub repository.
+2. In Vercel, click **Add New Project**.
+3. Import your repository and deploy with defaults:
+   - Framework: `Vite`
+   - Build command: `npm run build`
+   - Output directory: `dist`
 
-## 🚀 Deployment
+### Option B: Vercel CLI
 
-### Deploy to Vercel (Recommended)
-
-#### Option 1: Web Interface
-
-1. **Fork/Clone the repository** to your GitHub account
-
-2. **Connect to Vercel**:
-
-   - Go to [vercel.com](https://vercel.com)
-   - Sign in with your GitHub account
-   - Click "New Project"
-   - Import your repository
-
-3. **Configure build settings**:
-
-   - Framework Preset: `Vite`
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-   - Install Command: `npm install`
-
-4. **Environment Variables** (if needed):
-
-   - No environment variables required for basic functionality
-
-5. **Deploy**:
-   - Click "Deploy"
-   - Vercel will automatically build and deploy your application
-
-#### Option 2: Vercel CLI
-
-1. **Install Vercel CLI**:
-
-   ```bash
-   npm install -g vercel
-   ```
-
-2. **Login to Vercel**:
-
-   ```bash
-   vercel login
-   ```
-
-3. **Deploy from your project directory**:
-
-   ```bash
-   cd ffmpeg-web
-   vercel
-   ```
-
-4. **Follow the CLI prompts**:
-
-   - Link to existing project or create new one
-   - Confirm build settings (should auto-detect Vite)
-   - Deploy
-
-5. **For production deployment**:
-
-   ```bash
-   vercel --prod
-   ```
-
-6. **Set up automatic deployments**:
-   ```bash
-   vercel --prod --yes
-   ```
-
-### Manual Deployment
-
-1. **Build the project**:
-
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy the `dist` folder** to your preferred hosting service
-
-### Alternative Deployment Options
-
-- **Netlify**: Similar to Vercel, supports Vite builds out of the box
-- **GitHub Pages**: Requires additional configuration for SPA routing
-- **AWS S3 + CloudFront**: Static hosting with CDN
-- **Firebase Hosting**: Google's hosting solution
-
-## 🔧 Configuration
-
-### Customizing FFmpeg Settings
-
-Edit `src/services/ffmpeg/ffmpegService.js` to modify:
-
-- Audio processing parameters
-- File format support
-- Processing algorithms
-
-### Styling Customization
-
-The app uses Tailwind CSS. Customize styles in:
-
-- `tailwind.config.js` - Theme configuration
-- `src/index.css` - Global styles
-- Component files - Component-specific styles
-
-## 📁 Project Structure
-
-```
-ffmpeg-web/
-├── public/
-│   ├── ffmpeg-core-mt/     # FFmpeg.wasm files
-│   └── workers/            # Web worker files
-├── src/
-│   ├── components/
-│   │   ├── features/       # Main feature components
-│   │   └── layout/         # Layout components
-│   ├── hooks/              # Custom React hooks
-│   ├── services/           # FFmpeg service
-│   └── utils/              # Utility functions
-├── package.json
-├── vite.config.js
-└── tailwind.config.js
+```bash
+npm i -g vercel
+vercel login
+vercel
+vercel --prod
 ```
 
-## 🐛 Troubleshooting
+## Push To Your Own GitHub Repository
 
-### Common Issues
+If you cloned someone else's repository and want your own remote:
 
-1. **"SharedArrayBuffer is not supported"**
+```bash
+git remote remove origin
+git remote add origin git@github.com:<your-username>/<your-repo>.git
+git branch -M main
+git push -u origin main
+```
 
-   - Solution: Use HTTPS in production (required for SharedArrayBuffer)
-   - Local development should work with HTTP
+## Portfolio Notes
 
-2. **"WebAssembly is not supported"**
+- Project type: Audio utility / productivity
+- Key value: Privacy-first processing and practical creator workflow
+- UI direction: Modern dark-neon gradient with subtle grid pattern and motion
 
-   - Solution: Update to a modern browser that supports WebAssembly
+## Privacy
 
-3. **Large files not processing**
-
-   - Solution: Check file size limits (20MB total)
-   - Reduce file count (max 8 files)
-
-4. **Processing fails**
-   - Solution: Check browser console for detailed error messages
-   - Ensure files are valid audio formats
-
-### Browser Compatibility
-
-- ✅ Chrome 67+
-- ✅ Firefox 60+
-- ✅ Safari 11.1+
-- ✅ Edge 79+
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [FFmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) - Browser-based FFmpeg
-- [Framer Motion](https://www.framer.com/motion/) - Animation library
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Vite](https://vitejs.dev/) - Build tool
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [troubleshooting section](#troubleshooting)
-2. Search existing [issues](https://github.com/yourusername/ffmpeg-web/issues)
-3. Create a new issue with detailed information
-
----
-
-**Note**: This application processes audio entirely in your browser. No audio data is sent to any server, ensuring your privacy and security.
+All audio processing happens inside your browser. Files are not uploaded to any backend service.
