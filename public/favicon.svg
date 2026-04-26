@@ -1,0 +1,15 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="24" y1="20" x2="232" y2="236" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1D4ED8"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="note" x1="92" y1="74" x2="170" y2="184" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DBEAFE"/>
+    </linearGradient>
+  </defs>
+  <rect x="20" y="20" width="216" height="216" rx="56" fill="url(#bg)"/>
+  <rect x="20" y="20" width="216" height="216" rx="56" stroke="#93C5FD" stroke-opacity="0.45" stroke-width="4"/>
+  <path d="M154.5 70.5V156.5C154.5 167.27 144.95 176 133.167 176C121.383 176 111.833 167.27 111.833 156.5C111.833 145.73 121.383 137 133.167 137C137.285 137 141.13 138.068 144.333 139.915V98.724L102.833 108.61V166.5C102.833 177.27 93.2837 186 81.5 186C69.7163 186 60.1667 177.27 60.1667 166.5C60.1667 155.73 69.7163 147 81.5 147C85.6176 147 89.4628 148.068 92.6667 149.915V93.5C92.6667 89.8168 95.2348 86.6325 98.8458 85.8545L149.846 74.8668C152.4 74.3168 154.5 76.2237 154.5 78.7261V70.5Z" fill="url(#note)"/>
+</svg>
